@@ -1,20 +1,3 @@
-// Dynamically load CSS based on screen width
-function applyCSS() {
-    const themeStyle = document.getElementById('theme-style');
-    if (window.innerWidth <= 768) {
-        themeStyle.setAttribute('href', 'mobile.css'); // Load mobile CSS
-    } else {
-        themeStyle.setAttribute('href', 'desktop.css'); // Load desktop CSS
-    }
-}
-
-// Run on page load
-applyCSS();
-
-// Adjust on window resize
-window.addEventListener('resize', applyCSS);
-
-// Filtering images (same function as before)
 function filterImages(category) {
     const items = document.querySelectorAll('.grid-item');
     items.forEach(item => {
@@ -30,17 +13,24 @@ function filterImages(category) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Get the last modified date
+    const lastModifiedDate = new Date(document.lastModified);
 
-const lastModifiedDate = new Date(document.lastModified);
+    // Format the date with proper padding for single digits
+    const month = String(lastModifiedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(lastModifiedDate.getDate()).padStart(2, '0');
+    const year = lastModifiedDate.getFullYear();
+    const hours = String(lastModifiedDate.getHours()).padStart(2, '0');
+    const minutes = String(lastModifiedDate.getMinutes()).padStart(2, '0');
+    const seconds = String(lastModifiedDate.getSeconds()).padStart(2, '0');
 
-const options = { 
-    year: 'numeric', 
-    month: '2-digit', 
-    day: '2-digit', 
-    hour: '2-digit', 
-    minute: '2-digit', 
-    second: '2-digit' 
-};
-const formattedDate = lastModifiedDate.toLocaleDateString('en-US', options).replace(',', '');
+    // Create formatted date string
+    const formattedDate = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
 
-document.getElementById('lastModified').textContent = formattedDate;
+    // Display the formatted date in the footer
+    const lastModifiedElement = document.getElementById('lastModified');
+    if (lastModifiedElement) {
+        lastModifiedElement.textContent = formattedDate;
+    }
+});
